@@ -6,7 +6,7 @@ on:
       - '*'
 
 env:
-  PLUGIN_NAME: obsidian-export-to-tex-enhanced
+  PLUGIN_NAME: export-to-tex-enhanced
 
 jobs:
   build-and-release:
