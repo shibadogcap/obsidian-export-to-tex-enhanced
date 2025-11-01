@@ -29,11 +29,11 @@
     ]
   },
   "keywords": [],
-  "author": "Zach Raines",
+  "author": "shibadogcap",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git@github.com:raineszm/obsidian-export-to-tex.git"
+    "url": "https://github.com/shibadogcap/obsidian-export-to-tex-enhanced.git"
   },
   "devDependencies": {
     "@commitlint/cli": "^16.2.1",
