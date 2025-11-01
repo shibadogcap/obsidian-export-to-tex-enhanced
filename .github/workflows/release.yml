@@ -16,16 +16,16 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: latest
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '18'
           cache: 'pnpm'
-
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v2
-        with:
-          version: latest
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
@@ -46,5 +46,5 @@ jobs:
             ${{ env.PLUGIN_NAME }}.zip
             ${{ env.PLUGIN_NAME }}/main.js
             ${{ env.PLUGIN_NAME }}/manifest.json
-          generate_release_notes: true
-          token: ${{ secrets.GITHUB_TOKEN }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.TOKEN }}
