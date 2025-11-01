@@ -1,10 +1,7 @@
 import { App, ButtonComponent, PluginSettingTab, Setting } from 'obsidian';
-import {
-  ExportToTexSettings,
-  ImagePathSettingDescriptions,
-  ImagePathSettings,
-} from './settings';
+import { ExportToTexSettings, ImagePathSettings } from './settings';
 import ExportToTeXPlugin from '../main';
+import { getCurrentLanguage, translations } from '../i18n/translations';
 
 export class ExportToTeXSettingTab extends PluginSettingTab {
   constructor(app: App, readonly plugin: ExportToTeXPlugin) {
@@ -13,16 +10,23 @@ export class ExportToTeXSettingTab extends PluginSettingTab {
 
   display(): void {
     const { containerEl } = this;
+    const lang = getCurrentLanguage();
+    const t = (key: string) => {
+      const keys = key.split('.');
+      let value: any = translations[lang].settings;
+      for (const k of keys) {
+        value = value?.[k];
+      }
+      return value ?? key;
+    };
 
     containerEl.empty();
 
-    containerEl.createEl('h2', { text: 'Settings for exporting to TeX' });
+    containerEl.createEl('h2', { text: t('title') });
 
     new Setting(containerEl)
-      .setName('Generate labels and refs')
-      .setDesc(
-        'Automatically generate TeX labels and refs for blocks and headings?',
-      )
+      .setName(t('generateLabels.name'))
+      .setDesc(t('generateLabels.desc'))
       .addToggle((toggle) => {
         toggle
           .setValue(this.plugin.settings.generateLabels)
@@ -33,10 +37,8 @@ export class ExportToTeXSettingTab extends PluginSettingTab {
       });
 
     new Setting(containerEl)
-      .setName('Ref command')
-      .setDesc(
-        'Command to use when converting links to headings/blocks to refs.',
-      )
+      .setName(t('refCommand.name'))
+      .setDesc(t('refCommand.desc'))
       .addText((text) =>
         text
           .setValue(this.plugin.settings.refCommand)
@@ -47,40 +49,8 @@ export class ExportToTeXSettingTab extends PluginSettingTab {
       );
 
     new Setting(containerEl)
-      .setName('Additional math environments')
-      .setDesc(
-        'Additional environments which trigger math content without needing \\[...\\]' +
-          ' (one per line)',
-      )
-      .addTextArea((text) => {
-        text
-          .setValue(this.plugin.settings.additionalMathEnvironments.join('\n'))
-          .onChange(async (value) => {
-            this.plugin.settings.additionalMathEnvironments = value
-              .split('\n')
-              .map((x) => x.trim())
-              .filter((x) => x.length > 0);
-            await this.plugin.saveData(this.plugin.settings);
-          });
-      });
-
-    new Setting(containerEl)
-      .setName('Default to Equation')
-      .setDesc('Convert display math to equation environemtns')
-      .addToggle((toggle) => {
-        toggle
-          .setValue(this.plugin.settings.defaultToEquation)
-          .onChange(async (value) => {
-            this.plugin.settings.defaultToEquation = value;
-            await this.plugin.saveData(this.plugin.settings);
-          });
-      });
-
-    new Setting(containerEl)
-      .setName('Numbered sections')
-      .setDesc(
-        'When enabled emit headers as \\section{...}. When disabled instead use \\section*{...}',
-      )
+      .setName(t('numberedSections.name'))
+      .setDesc(t('numberedSections.desc'))
       .addToggle((toggle) => {
         toggle
           .setValue(this.plugin.settings.numberedSections)
@@ -91,10 +61,8 @@ export class ExportToTeXSettingTab extends PluginSettingTab {
       });
 
     new Setting(containerEl)
-      .setName('Compress newlines')
-      .setDesc(
-        'Reduce any instance of 2 or more blank lines to a single blank line',
-      )
+      .setName(t('compressNewlines.name'))
+      .setDesc(t('compressNewlines.desc'))
       .addToggle((toggle) => {
         toggle
           .setValue(this.plugin.settings.compressNewlines)
@@ -105,30 +73,109 @@ export class ExportToTeXSettingTab extends PluginSettingTab {
       });
 
     new Setting(containerEl)
-      .setName('Image path format')
-      .setDesc(
-        [
-          'Specifies how the path for images should be written in exported \\includegraphics calls',
-        ].join('\n'),
-      )
-      .addDropdown((dropdown) => {
-        for (let i = 0; i < ImagePathSettingDescriptions.length; i++) {
-          dropdown.addOption(i.toString(), ImagePathSettingDescriptions[i]);
-        }
-        dropdown
-          .setValue(this.plugin.settings.imagePathSettings.toString())
+      .setName(t('preamble.name'))
+      .setDesc(t('preamble.desc'))
+      .addTextArea((text) => {
+        text.setValue(this.plugin.settings.preamble).onChange(async (value) => {
+          this.plugin.settings.preamble = value;
+          await this.plugin.saveData(this.plugin.settings);
+        });
+        // テキストエリアを大きくするためのスタイル設定
+        text.inputEl.style.height = '400px';
+        text.inputEl.style.fontFamily = 'monospace';
+        text.inputEl.style.fontSize = '12px';
+      });
+
+    new Setting(containerEl)
+      .setName(t('postamble.name'))
+      .setDesc(t('postamble.desc'))
+      .addTextArea((text) => {
+        text
+          .setValue(this.plugin.settings.postamble)
           .onChange(async (value) => {
-            this.plugin.settings.imagePathSettings = Number.parseInt(
-              value,
-            ) as ImagePathSettings;
+            this.plugin.settings.postamble = value;
+            await this.plugin.saveData(this.plugin.settings);
+          });
+        // テキストエリアを大きくするためのスタイル設定
+        text.inputEl.style.height = '200px';
+        text.inputEl.style.fontFamily = 'monospace';
+        text.inputEl.style.fontSize = '12px';
+      });
+
+    new Setting(containerEl)
+      .setName(t('generateCaptions.name'))
+      .setDesc(t('generateCaptions.desc'))
+      .addToggle((toggle) => {
+        toggle
+          .setValue(this.plugin.settings.generateCaptions)
+          .onChange(async (value) => {
+            this.plugin.settings.generateCaptions = value;
+            await this.plugin.saveData(this.plugin.settings);
+          });
+      });
+
+    new Setting(containerEl)
+      .setName(t('figurePosition.name'))
+      .setDesc(t('figurePosition.desc'))
+      .addText((text) => {
+        text.setValue(this.plugin.settings.figurePosition);
+        text.onChange(async (value) => {
+          this.plugin.settings.figurePosition = value;
+          await this.plugin.saveData(this.plugin.settings);
+        });
+      });
+
+    new Setting(containerEl)
+      .setName(t('tablePosition.name'))
+      .setDesc(t('tablePosition.desc'))
+      .addText((text) => {
+        text.setValue(this.plugin.settings.tablePosition);
+        text.onChange(async (value) => {
+          this.plugin.settings.tablePosition = value;
+          await this.plugin.saveData(this.plugin.settings);
+        });
+      });
+
+    new Setting(containerEl)
+      .setName(t('askForFrontmatter.name'))
+      .setDesc(t('askForFrontmatter.desc'))
+      .addToggle((toggle) => {
+        toggle
+          .setValue(this.plugin.settings.askForFrontmatter)
+          .onChange(async (value) => {
+            this.plugin.settings.askForFrontmatter = value;
+            await this.plugin.saveData(this.plugin.settings);
+          });
+      });
+
+    new Setting(containerEl)
+      .setName(t('askForCaptions.name'))
+      .setDesc(t('askForCaptions.desc'))
+      .addToggle((toggle) => {
+        toggle
+          .setValue(this.plugin.settings.askForCaptions)
+          .onChange(async (value) => {
+            this.plugin.settings.askForCaptions = value;
+            await this.plugin.saveData(this.plugin.settings);
+          });
+      });
+
+    new Setting(containerEl)
+      .setName(t('askForExportPath.name'))
+      .setDesc(t('askForExportPath.desc'))
+      .addToggle((toggle) => {
+        toggle
+          .setValue(this.plugin.settings.askForExportPath)
+          .onChange(async (value) => {
+            this.plugin.settings.askForExportPath = value;
             await this.plugin.saveData(this.plugin.settings);
           });
       });
 
     new ButtonComponent(containerEl)
-      .setButtonText('Reset to default')
+      .setButtonText(t('resetButton'))
       .onClick(async () => {
-        if (!window.confirm('Reset settings to default?')) return;
+        if (!window.confirm(t('resetConfirm'))) return;
         this.plugin.settings = new ExportToTexSettings();
         await this.plugin.saveData(this.plugin.settings);
         this.display();

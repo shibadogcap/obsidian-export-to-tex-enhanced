@@ -1,0 +1,95 @@
+\documentclass[paper=a4]{jlreq}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{amsfonts}
+\usepackage{mathtools}
+\usepackage{graphicx}
+\usepackage{multirow}
+\usepackage{hyperref}
+\usepackage{diffcoeff}
+\usepackage{comment}
+\usepackage{mhchem}
+\usepackage[separate-uncertainty]{siunitx}
+\usepackage[math-style=ISO,warnings-off={mathtools-colon,mathtools-overbracket}]{unicode-math}
+\usepackage{newunicodechar}
+\usepackage{listings}
+\usepackage{float}
+\usepackage{adjustbox}
+\usepackage{tabularx}
+\usepackage{booktabs}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newunicodechar{、}{，}
+\newunicodechar{。}{．}
+\NewDocumentCommand\、{}{{\char"3001}}
+\NewDocumentCommand\。{}{{\char"3002}}
+\NewDocumentCommand\degC{}{\ensuremath{^\circ\symup{C}}}
+\NewDocumentCommand\abs{m}{\left|#1\right|}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\title{テーブル高さ修正テスト}
+\author{テストユーザー}
+\date{2025-11-01}
+
+\begin{document}
+\maketitle
+
+\section{修正内容の確認}
+
+\subsection{列数が少ないテーブル（8列以下）}
+
+通常の adjustbox を使用:
+
+\begin{table}[h]
+\centering
+\begin{adjustbox}{max width=\textwidth}
+\begin{tabularx}{\textwidth}{XXXXXX}
+\toprule
+項目 & 説明 & 値1 & 値2 & 値3 & 値4 \\
+\midrule
+テスト1 & データ1 & 100 & 200 & 300 & 400 \\
+テスト2 & データ2 & 150 & 250 & 350 & 450 \\
+テスト3 & データ3 & 200 & 300 & 400 & 500 \\
+\bottomrule
+\end{tabularx}
+\end{adjustbox}
+\caption{通常テーブル}
+\end{table}
+
+\subsection{列数が多いテーブル（9列以上）}
+
+{\small で縮小 + max height で高さ制限:
+
+\begin{table}[h]
+\centering
+{\small
+\begin{adjustbox}{max width=\textwidth, max height=0.85\textheight}
+\begin{tabularx}{\textwidth}{XXXXXXXXXXXX}
+\toprule
+枚数 & 厚み & 計1 & 計2 & 計3 & 計4 & 平均 & β線 & 対数 & 標偏 & 調整1 & 調整2 \\
+\midrule
+0 & 0 & 3848 & 3931 & 4006 & 3913 & 3924.5 & 3356.1 & 3.526 & 56.28 & 3.518 & 3.533 \\
+1 & 0.0198 & 3145 & 3143 & 3041 & 3033 & 3090.5 & 2522.1 & 3.402 & 53.58 & 3.392 & 3.411 \\
+2 & 0.0392 & 2632 & 2546 & 2549 & 2534 & 2565.25 & 1996.85 & 3.300 & 38.94 & 3.292 & 3.309 \\
+3 & 0.0582 & 2180 & 2146 & 2131 & 2111 & 2142 & 1573.6 & 3.197 & 25.21 & 3.190 & 3.204 \\
+4 & 0.078 & 1818 & 1794 & 1479 & 1471 & 1640.5 & 1072.1 & 3.030 & 165.74 & 2.957 & 3.093 \\
+5 & 0.0984 & 1596 & 1469 & 1479 & 1471 & 1503.75 & 935.35 & 2.971 & 53.39 & 2.945 & 2.995 \\
+6 & 0.1168 & 1219 & 1293 & 1231 & 1256 & 1249.75 & 681.35 & 2.833 & 28.31 & 2.815 & 2.851 \\
+\bottomrule
+\end{tabularx}
+\end{adjustbox}
+}
+\caption{修正後のテーブル（12列）}
+\end{table}
+
+\section{修正の効果}
+
+修正後の特徴:
+
+\begin{itemize}
+\item 列数 > 8 のテーブル: {\small フォントサイズを削減
+\item adjustbox: max height 制限で縦方向をページ内に収束
+\item max height=0.85\textbackslash{}textheight: ページの85\%までを使用可
+\end{itemize}
+
+\end{document}

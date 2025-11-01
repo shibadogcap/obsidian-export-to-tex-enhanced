@@ -1,0 +1,127 @@
+\documentclass[paper=a4]{jlreq}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{amsfonts}
+\usepackage{mathtools}
+\usepackage{graphicx}
+\usepackage{multirow}
+\usepackage{hyperref}
+\usepackage{diffcoeff}
+\usepackage{comment}
+\usepackage{mhchem}
+\usepackage[separate-uncertainty]{siunitx}
+\usepackage[math-style=ISO,warnings-off={mathtools-colon,mathtools-overbracket}]{unicode-math}
+\usepackage{newunicodechar}
+\usepackage{listings}
+\usepackage{float}
+\usepackage{adjustbox}
+\usepackage{tabularx}
+\usepackage{booktabs}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newunicodechar{、}{，}
+\newunicodechar{。}{．}
+\NewDocumentCommand\、{}{{\char"3001}}
+\NewDocumentCommand\。{}{{\char"3002}}
+\NewDocumentCommand\degC{}{\ensuremath{^\circ\symup{C}}}
+\NewDocumentCommand\abs{m}{\left|#1\right|}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\jlreqsetup{
+    appendix_counter={
+        section={
+            value=0,
+            the={\Alph{section}}
+        },
+        table={
+            value=0,
+            the={\Alph{section}\arabic{table}}
+        },
+        figure={
+            value=0,
+            the={\Alph{section}\arabic{figure}}
+        }
+    },
+    appendix_heading={
+        section={
+            label_format={付録\thesection:}
+        }
+    }
+}
+
+\title{テスト: 画像とテーブルレイアウト改善}
+\author{テストユーザー}
+\date{2025-11-01}
+
+\begin{document}
+\maketitle
+
+\section{テスト内容}
+
+\subsection{画像テスト}
+
+以下のような画像を含むテストです。
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.8\textwidth,keepaspectratio]{放射線_実験装置.png}
+\caption{実験装置（改善版）}
+\end{figure}
+
+画像は自動的に \texttt{0.8\textbackslash textwidth} に制限されます。
+
+\subsection{テーブルテスト}
+
+以下のテーブルをテストします。
+
+\begin{table}[h]
+\centering
+\begin{adjustbox}{max width=\textwidth}
+\begin{tabularx}{\textwidth}{XXX}
+\toprule
+項目 & 説明 & 備考 \\
+\midrule
+画像幅 & テキスト幅の80\% & keepaspectratioで比率保持 \\
+テーブル & tabularx使用 & 自動カラム幅調整 \\
+線のスタイル & booktabs & プロ品質の表示 \\
+\bottomrule
+\end{tabularx}
+\end{adjustbox}
+\caption{改善内容}
+\end{table}
+
+\subsection{複雑なテーブルテスト}
+
+より複雑なテーブルの例:
+
+\begin{table}[h]
+\centering
+\begin{adjustbox}{max width=\textwidth}
+\begin{tabularx}{\textwidth}{XXXX}
+\toprule
+No. & 実験項目 & 計測値 & 結果 \\
+\midrule
+1 & 自然計数の測定 & 20回測定 & ポアッソン分布に従う \\
+2 & ベータ線計数分布 & 100回, 300回計測 & 平均値65付近 \\
+3 & 距離依存性 & 30mm, 120mm & 距離で大きく変化 \\
+4 & 吸収実験（Ti箔） & 0-6枚 & 線吸収係数μ=0.075 \\
+5 & 吸収実験（Cu箔） & 0-6枚 & 線吸収係数μ=0.030 \\
+\bottomrule
+\end{tabularx}
+\end{adjustbox}
+\caption{実験結果サマリー}
+\end{table}
+
+\subsection{位置指定のテスト}
+
+図表の位置指定オプション:
+\begin{itemize}
+\item h = ここに配置
+\item t = ページ上部
+\item b = ページ下部
+\item p = 別ページ
+\item H = 強制ここ（floatパッケージ必須）
+\end{itemize}
+
+デフォルトは \texttt{[h]} 設定になりました。
+
+\end{document}

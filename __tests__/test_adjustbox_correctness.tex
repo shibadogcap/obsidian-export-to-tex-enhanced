@@ -1,0 +1,76 @@
+\documentclass[paper=a4]{jlreq}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{amsfonts}
+\usepackage{mathtools}
+\usepackage{graphicx}
+\usepackage{multirow}
+\usepackage{hyperref}
+\usepackage{diffcoeff}
+\usepackage{comment}
+\usepackage{mhchem}
+\usepackage[separate-uncertainty]{siunitx}
+\usepackage{newunicodechar}
+\usepackage{listings}
+\usepackage{float}
+\usepackage{lscape}
+\usepackage{adjustbox}
+\usepackage{tabularx}
+\usepackage{booktabs}
+
+\begin{document}
+
+% テスト1: 通常テーブル（2列）
+\begin{table}[h]
+\centering
+\begin{adjustbox}{max width=\textwidth}
+\begin{tabularx}{\textwidth}{XX}
+\toprule
+Header1 & Header2 \\
+\midrule
+Data1 & Data2 \\
+Data3 & Data4 \\
+\bottomrule
+\end{tabularx}
+\end{adjustbox}
+\caption{テスト1: 通常テーブル}
+\end{table}
+
+% テスト2: 中列テーブル（7列）
+\begin{table}[h]
+\centering
+{\small
+\begin{adjustbox}{max width=\textwidth, max height=0.85\textheight}
+\begin{tabularx}{\textwidth}{XXXXXXX}
+\toprule
+H1 & H2 & H3 & H4 & H5 & H6 & H7 \\
+\midrule
+D1 & D2 & D3 & D4 & D5 & D6 & D7 \\
+D8 & D9 & D10 & D11 & D12 & D13 & D14 \\
+\bottomrule
+\end{tabularx}
+\end{adjustbox}
+}
+\caption{テスト2: 中列テーブル（7列）}
+\end{table}
+
+% テスト3: 広いテーブル（12列）landscape
+\begin{landscape}
+\begin{table}[h]
+\centering
+\begin{adjustbox}{max width=\textwidth}
+\begin{tabularx}{\textwidth}{XXXXXXXXXXXX}
+\toprule
+H1 & H2 & H3 & H4 & H5 & H6 & H7 & H8 & H9 & H10 & H11 & H12 \\
+\midrule
+D1 & D2 & D3 & D4 & D5 & D6 & D7 & D8 & D9 & D10 & D11 & D12 \\
+D13 & D14 & D15 & D16 & D17 & D18 & D19 & D20 & D21 & D22 & D23 & D24 \\
+\bottomrule
+\end{tabularx}
+\end{adjustbox}
+\caption{テスト3: 広いテーブル（12列）}
+\end{table}
+\end{landscape}
+
+\end{document}

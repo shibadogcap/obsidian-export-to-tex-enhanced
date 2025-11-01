@@ -3,6 +3,7 @@ import remarkParse from 'remark-parse';
 import math from 'remark-math';
 import gfm from 'remark-gfm';
 import directive from 'remark-directive';
+import footnotes from 'remark-footnotes';
 import wikiLinkPlugin from 'remark-wiki-link';
 import frontmatter from 'remark-frontmatter';
 import { embed } from './transform/embeds';
@@ -15,6 +16,7 @@ export const markdownToTex = unified()
   .use(math)
   .use(frontmatter)
   .use(directive)
+  .use(footnotes)
   .use(wikiLinkPlugin, {
     aliasDivider: '|',
   })

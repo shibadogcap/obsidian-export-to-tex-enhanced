@@ -14,3 +14,20 @@ deploy.sh
 
 # test
 coverage/*
+
+# LaTeX build artifacts
+*.aux
+*.log
+*.out
+*.pdf
+*.synctex.gz
+
+# Development documentation (optional - remove if you want to keep)
+docs/
+
+# Test vault outputs
+test_vault/ExportToTex/Output/
+test_vault/**/*.aux
+test_vault/**/*.log
+test_vault/**/*.out
+test_vault/**/*.pdf

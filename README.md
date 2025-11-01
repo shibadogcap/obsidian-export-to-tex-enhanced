@@ -1,35 +1,40 @@
-# obsidian-export-to-tex
-[![](https://img.shields.io/github/v/release/raineszm/obsidian-export-to-tex?style=for-the-badge)](https://github.com/raineszm/obsidian-export-to-tex/releases/latest)
-![](https://img.shields.io/github/commits-since/raineszm/obsidian-export-to-tex/latest?style=for-the-badge)
-![](https://img.shields.io/github/manifest-json/minAppVersion/raineszm/obsidian-export-to-tex?color=red&label=Min%20Obsidian%20Version&style=for-the-badge)
-![](https://img.shields.io/github/downloads/raineszm/obsidian-export-to-tex/total?style=for-the-badge)
+# obsidian-export-to-tex-enhanced
+
+[![日本語](https://img.shields.io/badge/日本語-README.ja.md-blue?style=flat-square)](README.ja.md)
+
+[![](https://img.shields.io/github/v/release/shibadogcap/obsidian-export-to-tex-enhanced?style=for-the-badge)](https://github.com/shibadogcap/obsidian-export-to-tex-enhanced/releases/latest)
+![](https://img.shields.io/github/commits-since/shibadogcap/obsidian-export-to-tex-enhanced/latest?style=for-the-badge)
+![](https://img.shields.io/github/manifest-json/minAppVersion/shibadogcap/obsidian-export-to-tex-enhanced?color=red&label=Min%20Obsidian%20Version&style=for-the-badge)
+![](https://img.shields.io/github/downloads/shibadogcap/obsidian-export-to-tex-enhanced/total?style=for-the-badge)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge)](#license)
 
 > Export to obsidian notes to LaTeX format, suitable for pasting into a TeX file.
-> 
+
+## About This Plugin
+
+This is an enhanced fork of the original [obsidian-export-to-tex](https://github.com/raineszm/obsidian-export-to-tex) plugin by Zach Raines.
+
+### ✨ Enhanced Features
+- 🇯🇵 **Japanese Localization**: Complete Japanese UI support
+- 📊 **Advanced Table Rendering**: Smart border detection for summary rows
+- 🎯 **Intelligent Table Processing**: Automatic longtable support and vertical line removal
+- 🖼️ **Enhanced Image Handling**: Improved image path resolution
+- 📝 **Modal-based Workflows**: User-friendly export configuration dialogs
+
 ![](https://raw.githubusercontent.com/raineszm/obsidian-export-to-tex/master/images/export-to-clipboard.gif)
 
 ## Installation
 
+> **Note**: This plugin is not yet available in the Obsidian Community Plugins. You must install it manually.
+
 If you have Obsidian version 0.9.8 or greater:
 
-1. Open the options pane
-1. Go to `Third-party plugins`
-1. Ensure that `safe-mode` is *off*. (**WARNING: Please verify for yourself the safety of any plugins before using them.**)
-1. Click `Browse` next to Community Plugins
-1. Search for `Export To TeX`
-1. Click `Install`
-1. Go back to the `Third-party plugins` page and enable `Export To TeX`
-
-To update simply go back to the `Third-Party plugins` page for `Export To TeX` and click `Update`.
-
-
 ### Manual Installation
-To manually install
- 1. download the latest `zip`from the [latest Github Release](https://github.com/raineszm/obsidian-export-to-tex/releases/latest)
- 1. unzip the contents into the `.plugins/obsidian-export-to-tex` subdirectory of your vault.
- 1. reload obsidian
- 1. go into settings > third party plugins and activate obsidian-export-to-tex
+To manually install:
+1. Download the latest `zip` from the [latest GitHub Release](https://github.com/shibadogcap/obsidian-export-to-tex-enhanced/releases/latest)
+2. Unzip the contents into the `.plugins/obsidian-export-to-tex-enhanced` subdirectory of your vault
+3. Reload Obsidian
+4. Go into settings > third party plugins and activate `obsidian-export-to-tex-enhanced`
 
 For details see [the forums](https://forum.obsidian.md/t/plugins-mini-faq/7737).
 
@@ -75,8 +80,44 @@ The command to use for generating refs: defaults to `\cref`.
 Export to TeX will by default strip the surrounding displaymath delimeters from toplevel math environments such as `equation`.
 If there are other environments you which to do this for, they can be added to this list.
 
-### Default to equation
+### Settings
 
+#### Generate Captions
+**Default: true**
+
+Automatically generate captions for tables and figures in the exported LaTeX.
+
+#### Figure Position
+**Default: 'h'**
+
+LaTeX positioning parameter for figures. Common values:
+- `h`: Here (preferred position)
+- `t`: Top of page
+- `b`: Bottom of page
+- `p`: Separate page for floats
+- `H`: Exactly here (requires float package)
+
+#### Table Position
+**Default: 'H'**
+
+LaTeX positioning parameter for tables. Same options as figure position.
+
+#### Generate Labels and Refs
+**Default: true**
+
+Automatically generate labels for headings and blocks. Links within the same file will be converted to `\ref` calls.
+
+#### Ref Command
+**Default: 'cref'**
+
+The LaTeX command to use for cross-references. Defaults to `\cref` (requires cleveref package).
+
+#### Additional Math Environments
+**Default: []**
+
+By default, display math delimiters are stripped from top-level math environments like `equation`. Add other environments to this list if you want the same treatment.
+
+#### Default to Equation
 **Default: false**
 
 By default, display math environments
@@ -86,44 +127,39 @@ $$
 x^2
 $$
 ```
-will be exported as display math 
+will be exported as display math
 ```latex
 \[
 x^2
 \]
 ```
-if there is no top level environment present.
 
-With default to equation on this well instead be exported as
+With this option enabled, they will instead be exported as equation environments:
+
 ```latex
 \begin{equation}
 x^2
 \end{equation}
 ```
 
-### Compress Newlines
-
+#### Compress Newlines
 **Default: false**
 
-When enabled, exported TeX will have any instance of more than one blank line in a row compressed to a single blank line.
+When enabled, multiple consecutive newlines in the markdown will be compressed to a single newline in the LaTeX output.
 
-### Image path format
+#### Image Path Settings
+**Default: Relative to Root**
 
-**Default: Relative to vault root**
+Controls how image paths are handled in the exported LaTeX:
+- **Relative to Root**: Paths relative to vault root
+- **Full Path**: Absolute file system paths
+- **Base Name**: Just the filename
+- **Relative to Export**: Relative to export location
 
-Determines how image paths are written when converting image embeddings `![[image.png]]` to `\includgraphics` calls.
-Options are
+#### Numbered Sections
+**Default: true**
 
-- *Relative to vault root*: uses to file path relative to the root of the current vault, `\includegraphics{Figures/image.png}`
-- *Absolute path*: uses the absolute path to the file on your filesystem, `\includegraphics{/Users/user/Documents/Vault/Figures/image.png}` 
-- *File base name*: uses only the base name of the image file: `\includegraphics{image}`
-- *Relative to export directory*: gives the file path relative to the export TeX directory, (if copying to clipboard will be relative to default export directory).
-
-### Default export directory
-
-**Defaults to vault root*
-
-If set the file picker will open to the chosen directory for export.
+Whether to number sections, subsections, etc. in the exported LaTeX.
 
 
 
