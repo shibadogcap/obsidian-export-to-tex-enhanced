@@ -1,5 +1,5 @@
 {
-  "name": "obsidian-export-to-tex-enhanced",
+  "name": "export-to-tex-enhanced",
   "version": "1.0.0",
   "description": "Enhanced LaTeX export with Japanese localization, advanced table rendering, and modal-based workflows",
   "main": "src/main.js",
